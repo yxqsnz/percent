@@ -1,3 +1,4 @@
+#![deny(clippy::pedantic, clippy::nursery)]
 mod body;
 mod database;
 mod endpoints;
