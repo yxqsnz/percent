@@ -1,0 +1,69 @@
+version: "3.9"
+services:
+  hub-agent:
+    image: ghcr.io/traefik/hub-agent-traefik:v1.0.0
+    pull_policy: always
+    container_name: hub-agent
+    restart: "on-failure"
+    command:
+      - run
+      - --hub.token=${TRAEFIK_HUB_TOKEN}
+      - --auth-server.advertise-url=http://hub-agent
+      - --traefik.host=traefik
+      - --traefik.tls.insecure=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - traefik
+    env_file:
+      - .env
+
+  traefik:
+    image: traefik:v2.8
+    container_name: traefik
+    command:
+      # Enable Hub communication (open the port 9900 and 9901 by default)
+      - --experimental.hub=true
+      - --hub.tls.insecure=true
+      - --metrics.prometheus.addrouterslabels=true
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker"
+      - "--providers.docker.exposedByDefault=true"
+      - "--api"
+      - "--api.insecure=true"
+      - "--log.level=DEBUG"
+    ports:
+      # The HTTP port
+      - "80:80"
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8000:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      # Dashboard
+      - "traefik.http.routers.traefik.rule=Host(`localhost`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      PGDATA: /var/lib/postgresql/pgdata
+    volumes:
+      - ./container/postgres:/var/lib/postgresql/pgdata:z
+    ports:
+      - ${POSTGRES_PORT}:5432
+    env_file:
+      - .env
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 5672:5672
+      - 15672:15672
