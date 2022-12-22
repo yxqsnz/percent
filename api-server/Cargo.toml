@@ -8,9 +8,11 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.68"
 axum = "0.6.1"
+bcrypt = "0.13.0"
 dotenv = "0.15.0"
-sqlx = { version = "0.6.2", features = ["runtime-tokio-rustls", "postgres", "offline"] }
+serde = { version = "1.0.151", features = ["derive"] }
+sqlx = { version = "0.6.2", default-features = false, features = ["runtime-tokio-rustls", "postgres", "migrate", "macros"] }
 tokio = { version = "1.23.0", features = ["rt-multi-thread", "macros"] }
-tower-http = { version = "0.3.5", features = ["cors"] }
+tower-http = { version = "0.3.5", features = ["cors", "trace"] }
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }

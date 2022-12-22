@@ -5,7 +5,10 @@ use axum::{
     Router,
 };
 use sqlx::{Pool, Postgres};
-use tower_http::cors::{AllowHeaders, CorsLayer};
+use tower_http::{
+    cors::{AllowHeaders, CorsLayer},
+    trace::TraceLayer,
+};
 
 macro_rules! endpoint {
     ($method:tt: $($location:tt)+) => {
@@ -16,6 +19,8 @@ macro_rules! endpoint {
 pub fn route(pool: Pool<Postgres>) -> Router {
     Router::new()
         .route("/api/v1/status", endpoint!(get: v1::status))
+        .route("/api/v1/account", endpoint!(post: v1::account))
+        .layer(TraceLayer::new_for_http())
         .layer(
             CorsLayer::new()
                 .allow_origin("*".parse::<HeaderValue>().unwrap())

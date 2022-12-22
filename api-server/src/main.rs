@@ -1,4 +1,7 @@
+mod body;
+mod database;
 mod endpoints;
+mod utils;
 
 use anyhow::Result;
 use axum::Server;
@@ -14,7 +17,7 @@ async fn main() -> Result<()> {
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "api_server=debug".into()),
+                .unwrap_or_else(|_| "api_server=debug,tower_http=debug".into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
@@ -26,6 +29,7 @@ async fn main() -> Result<()> {
         .connect(&var("Database.URL")?)
         .await?;
 
+    sqlx::migrate!("../migrations").run(&db).await?;
     let addr = SocketAddr::from_str(&var("Api.ServeURL")?)?;
     info!("Listening on {}", addr);
 
