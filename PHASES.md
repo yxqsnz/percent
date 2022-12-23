@@ -5,6 +5,7 @@
 - [x] Basic authentication
   - [x] Register
   - [x] Login
+- [ ] Tests
 - [ ] Basic UI
 
 # [SNOW] (NEXT)
