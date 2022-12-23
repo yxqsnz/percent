@@ -7,7 +7,7 @@ mod utils;
 
 use anyhow::Result;
 use axum::Server;
-use dotenv::dotenv;
+use dotenvy::dotenv;
 use sqlx::postgres::PgPoolOptions;
 use std::{env::var, net::SocketAddr, str::FromStr};
 use tracing::info;
