@@ -1,16 +1,20 @@
 use serde::Deserialize;
+use validator::Validate;
 
-use crate::utils::validators::MaxSizedString;
-
-#[derive(Deserialize)]
+#[derive(Deserialize, Validate)]
 pub struct AccountCreate {
-    pub full_name: Option<MaxSizedString<32>>,
-    pub nick: MaxSizedString<16>,
-    pub password: MaxSizedString<72>,
+    #[validate(length(min = 2, max = 32))]
+    pub full_name: Option<String>,
+    #[validate(length(min = 3, max = 16))]
+    pub nick: String,
+    #[validate(length(min = 8, max = 72))]
+    pub password: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Validate)]
 pub struct AccountJoin {
-    pub nick: MaxSizedString<16>,
-    pub password: MaxSizedString<72>,
+    #[validate(length(min = 3, max = 16))]
+    pub nick: String,
+    #[validate(length(min = 8, max = 72))]
+    pub password: String,
 }

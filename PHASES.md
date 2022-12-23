@@ -1,11 +1,14 @@
 # Project phases
 
-[Snow] (CURRENT)
+# [FLARE] (CURRENT)
 
-- [ ] Basic authentication
+- [x] Basic authentication
   - [x] Register
-  - [ ] Login
+  - [x] Login
 - [ ] Basic UI
+
+# [SNOW] (NEXT)
+
 - [ ] User Profile
 - [ ] Basic Perc "Tweet"
 - [ ] Liking
