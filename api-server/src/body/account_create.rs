@@ -8,3 +8,9 @@ pub struct AccountCreate {
     pub nick: MaxSizedString<16>,
     pub password: MaxSizedString<72>,
 }
+
+#[derive(Deserialize)]
+pub struct AccountJoin {
+    pub nick: MaxSizedString<16>,
+    pub password: MaxSizedString<72>,
+}

@@ -2,6 +2,7 @@
 mod body;
 mod database;
 mod endpoints;
+mod models;
 mod utils;
 
 use anyhow::Result;
