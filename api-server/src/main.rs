@@ -1,11 +1,7 @@
 #![deny(clippy::pedantic, clippy::nursery)]
-mod body;
-mod database;
-mod endpoints;
-mod models;
-mod utils;
 
 use anyhow::Result;
+use api_server::endpoints;
 use axum::Server;
 use dotenvy::dotenv;
 use sqlx::postgres::PgPoolOptions;
@@ -28,7 +24,7 @@ async fn main() -> Result<()> {
 
     let db = PgPoolOptions::new()
         .max_connections(5)
-        .connect(&var("Database.URL")?)
+        .connect(&var("DATABASE_URL")?)
         .await?;
 
     sqlx::migrate!("../migrations").run(&db).await?;
