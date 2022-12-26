@@ -1,5 +1,5 @@
 <template>
-    <nav class="sticky top-0 z-40 backdrop-blur-sm bg-slate-900/10 w-full">
+    <nav class="absolute top-0 z-40 backdrop-blur-sm bg-slate-900 w-full">
         <div class="p-3">
             <div class="flex justify-between">
                 <PageTitle />
@@ -10,9 +10,7 @@
                     </NuxtLink>
                     <ClickableButton text="Login" />
                 </div>
-
             </div>
-
         </div>
     </nav>
 </template>
