@@ -1,6 +1,6 @@
 [package]
 name = "api-server"
-version = "0.2.0-flare"
+version = "0.2.1-flare"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -11,6 +11,7 @@ axum = "0.6.1"
 axum-extra = { version = "0.4.2", features = ["cookie"] }
 bcrypt = "0.13.0"
 dotenvy = "0.15.6"
+mime = "0.3.16"
 serde = { version = "1.0.151", features = ["derive"] }
 serde_json = "1.0.91"
 sqlx = { version = "0.6.2", default-features = false, features = [
@@ -24,7 +25,9 @@ sqlx = { version = "0.6.2", default-features = false, features = [
 thiserror = "1.0.38"
 time = "0.3.17"
 tokio = { version = "1.23.0", features = ["rt-multi-thread", "macros"] }
-tower-http = { version = "0.3.5", features = ["cors", "trace"] }
+tower = { version = "0.4.13", features = ["tracing"] }
+tower-http = { version = "0.3.5", features = ["cors", "trace", "mime"] }
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
+tracing-test = "0.2.3"
 validator = { version = "0.16.0", features = ["derive"] }
