@@ -1,5 +1,5 @@
 use sqlx::{pool::PoolConnection, Postgres};
-use time::{OffsetDateTime};
+use time::OffsetDateTime;
 
 use crate::models::account::Account;
 
