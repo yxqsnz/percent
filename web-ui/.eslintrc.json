@@ -1,0 +1,8 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": "next/core-web-vitals",
+
+  "rules": {
+    "no-html-links-for-pages": 0
+  }
+}
