@@ -3,9 +3,29 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
+use parse_display::Display;
 use serde_json::json;
 use sqlx::error::DatabaseError;
 use thiserror::Error;
+
+#[derive(Debug, Error, Display)]
+pub struct NoneError(String);
+
+pub trait Miracle {
+    type Output;
+    fn miracle(self, reason: impl ToString) -> Result<Self::Output, NoneError>;
+}
+
+impl<O> Miracle for Option<O> {
+    type Output = O;
+
+    fn miracle(self, reason: impl ToString) -> Result<Self::Output, NoneError> {
+        match self {
+            Some(inner) => Ok(inner),
+            None => Err(NoneError(reason.to_string())),
+        }
+    }
+}
 
 #[derive(Error, Debug)]
 pub enum Error {
@@ -20,11 +40,14 @@ pub enum Error {
 
     #[error("#{0}")]
     Validations(#[from] validator::ValidationErrors),
+
+    #[error("{0:?}")]
+    NoneError(#[from] NoneError),
 }
 
 impl IntoResponse for Error {
     fn into_response(self) -> Response {
-        use Error::{Bcrypt, Sqlx, Validation, Validations};
+        use Error::{Bcrypt, NoneError, Sqlx, Validation, Validations};
 
         let (status, message) = match self {
             Sqlx(sqlx_error) => match sqlx_error {
@@ -54,6 +77,7 @@ impl IntoResponse for Error {
 
             Validation(err) => (StatusCode::UNPROCESSABLE_ENTITY, format!("{err}")),
             Validations(errs) => (StatusCode::UNPROCESSABLE_ENTITY, format!("{errs}")),
+            NoneError(e) => (StatusCode::BAD_REQUEST, e.0),
         };
 
         let body = Json(json!({

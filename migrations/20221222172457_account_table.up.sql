@@ -5,5 +5,6 @@ CREATE TABLE "accounts" (
   "name" varchar(32),
   -- Hashed lol
   "password" varchar NOT NULL,
+  "token" text not null,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );

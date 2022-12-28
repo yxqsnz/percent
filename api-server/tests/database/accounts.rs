@@ -1,4 +1,4 @@
-use api_server::database::accounts::Accounts;
+use api_server::{database::accounts::Accounts, utils::token};
 use sqlx::PgPool;
 
 #[sqlx::test]
@@ -13,6 +13,7 @@ async fn create_account(db: PgPool) {
         "test_xd".to_string(),
         Some("John Y.".to_string()),
         "12345678".to_string(),
+        token::generate(),
     )
     .await;
 
@@ -34,6 +35,7 @@ async fn create_and_find_account(db: PgPool) {
         "test_xd".to_string(),
         Some("John Y.".to_string()),
         "12345678".to_string(),
+        token::generate(),
     )
     .await;
 

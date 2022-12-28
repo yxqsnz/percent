@@ -22,6 +22,7 @@ pub fn route(pool: Pool<Postgres>) -> Router {
     Router::new()
         .route("/api/v1/status", endpoint!(get: v1::status))
         .route("/api/v1/account", endpoint!(post, get: v1::account))
+        .route("/api/v1/account-info", endpoint!(get: v1::account_info))
         .layer(TraceLayer::new_for_http())
         .layer(
             CorsLayer::new()
