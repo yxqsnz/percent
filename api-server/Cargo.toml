@@ -1,6 +1,6 @@
 [package]
 name = "api-server"
-version = "0.2.1-flare"
+version = "0.3.0-flare"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
