@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
 use time::OffsetDateTime;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, FromRow)]
 pub struct Account {
     pub nick: String,
     pub name: Option<String>,
