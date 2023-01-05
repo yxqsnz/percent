@@ -1,5 +1,4 @@
-pub mod error;
-pub mod response;
+pub mod macros;
 pub mod token;
 
-pub type RestResult<T> = Result<T, error::Error>;
+pub type RestResult<T> = Result<T, crate::response::error::Response>;
