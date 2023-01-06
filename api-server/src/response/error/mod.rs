@@ -1,9 +1,5 @@
-mod because;
-mod code;
-mod raw;
-mod response;
+mod core;
+mod structured;
 
-pub use because::Because;
-pub use code::Code;
-use raw::Raw;
-pub use response::Response;
+pub use crate::response::error::core::*;
+pub use structured::*;

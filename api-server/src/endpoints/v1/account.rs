@@ -34,7 +34,7 @@ pub async fn get(
 ) -> RestResult<(CookieJar, StatusCode)> {
     details.validate()?;
 
-    let account = Accounts::find_by_nick(&mut db, details.nick).await?;
+    let account = Accounts::find_by_nick(&mut db, details.nick).await.to()?;
 
     if bcrypt::verify(details.password, &account.password)? {
         let cookie = Cookie::new("Account.Token", account.token);

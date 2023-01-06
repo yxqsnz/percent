@@ -22,7 +22,6 @@ sqlx = { version = "0.6.2", default-features = false, features = [
     "time",
 
 ] }
-thiserror = "1.0.38"
 time = { version = "0.3.17", features = ["serde"] }
 tokio = { version = "1.23.0", features = ["rt-multi-thread", "macros"] }
 tower = { version = "0.4.13", features = ["tracing"] }
@@ -35,6 +34,7 @@ parse-display = "0.8.0"
 rand = "0.8.5"
 rand_hc = "0.3.1"
 base64 = "0.20.0"
+snafu = "0.7.4"
 
 [dev-dependencies]
 hyper = "0.14.23"
