@@ -10,14 +10,23 @@
         placeholder="Your nickname"
         min-length="2"
         max-length="16"
+        v-model:value="nick"
       />
+
       <RegisterField
         type="password"
         placeholder="Your password"
         min-length="2"
         max-length="72"
+        v-model:value="password"
       />
+
       <YoButton type="submit"> Create your account </YoButton>
     </div>
   </form>
 </template>
+
+<script setup>
+const nick = ref("");
+const password = ref("");
+</script>
