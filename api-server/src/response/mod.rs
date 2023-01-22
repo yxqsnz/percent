@@ -1,3 +1,3 @@
 pub mod error;
 
-pub use error::{BcryptSnafu, SqlxSnafu, ValidationSnafu, ValidationsSnafu};
+pub use error::{BcryptSnafu, MissingValueSnafu, SqlxSnafu, ValidationSnafu, ValidationsSnafu};

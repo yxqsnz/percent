@@ -10,6 +10,7 @@ use super::Structured;
 pub enum Error {
     Validations { source: ValidationErrors },
     Validation { source: ValidationError },
+    MissingValue { text: String },
     Bcrypt { source: BcryptError },
     Sqlx { source: sqlx::Error },
 }

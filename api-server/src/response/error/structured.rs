@@ -1,4 +1,5 @@
 use axum::{response::IntoResponse, Json};
+use hyper::StatusCode;
 use serde::Serialize;
 
 use super::Error;
@@ -6,6 +7,7 @@ use super::Error;
 #[derive(Serialize, Debug)]
 pub enum Code {
     ValidationFailed,
+    InvalidRequest,
     InternalServerError,
 }
 
@@ -17,7 +19,15 @@ pub struct Structured {
 
 impl IntoResponse for Structured {
     fn into_response(self) -> axum::response::Response {
-        Json(self).into_response()
+        let code = match self.error {
+            Code::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
+            Code::InvalidRequest => StatusCode::BAD_REQUEST,
+            Code::ValidationFailed => StatusCode::BAD_REQUEST,
+        };
+        let mut resp = Json(self).into_response();
+        let status = resp.status_mut();
+        *status = code;
+        resp
     }
 }
 
@@ -58,6 +68,11 @@ impl From<Error> for Structured {
                 tracing::error!("A Bcrypt error has happend: {source}");
                 internal_server_error
             }
+
+            Error::MissingValue { text } => Self {
+                error: Code::InvalidRequest,
+                messages: vec![text; 1],
+            },
         }
     }
 }

@@ -28,8 +28,8 @@ async fn main() -> Result<()> {
         .await?;
 
     sqlx::migrate!("../migrations").run(&db).await?;
-    let addr = SocketAddr::from_str(&var("DATABASE_URL")?)?;
-    info!("Listening on {}", addr);
+    let addr = SocketAddr::from_str(&var("API_URL")?)?;
+    info!("Listening on {addr}");
 
     Server::bind(&addr)
         .serve(endpoints::route(db).into_make_service())
