@@ -1,6 +1,7 @@
 use axum::response::IntoResponse;
+use bcrypt::BcryptError;
 use snafu::Snafu;
-use validator::ValidationErrors;
+use validator::{ValidationError, ValidationErrors};
 
 use super::Structured;
 
@@ -8,6 +9,8 @@ use super::Structured;
 #[snafu(visibility(pub))]
 pub enum Error {
     Validations { source: ValidationErrors },
+    Validation { source: ValidationError },
+    Bcrypt { source: BcryptError },
     Sqlx { source: sqlx::Error },
 }
 
