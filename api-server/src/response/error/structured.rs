@@ -43,7 +43,7 @@ impl From<Error> for Structured {
                 error: Code::ValidationFailed,
                 messages: source
                     .errors()
-                    .into_iter()
+                    .iter()
                     .map(|(a, b)| format!("{a}: {b:?}"))
                     .collect(),
             },
