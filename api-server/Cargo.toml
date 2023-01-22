@@ -1,12 +1,11 @@
 [package]
 name = "api-server"
-version = "0.3.1-flare"
+version = "0.4.0-flare"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.68"
 axum = { version = "0.6.1", features = ["macros"] }
 axum-extra = { version = "0.4.2", features = ["cookie"] }
 bcrypt = "0.13.0"
@@ -14,15 +13,6 @@ dotenvy = "0.15.6"
 mime = "0.3.16"
 serde = { version = "1.0.151", features = ["derive"] }
 serde_json = "1.0.91"
-sqlx = { version = "0.6.2", default-features = false, features = [
-    "runtime-tokio-rustls",
-    "postgres",
-    "migrate",
-    "macros",
-    "time",
-
-] }
-thiserror = "1.0.38"
 time = { version = "0.3.17", features = ["serde"] }
 tokio = { version = "1.23.0", features = ["rt-multi-thread", "macros"] }
 tower = { version = "0.4.13", features = ["tracing"] }
@@ -35,6 +25,11 @@ parse-display = "0.8.0"
 rand = "0.8.5"
 rand_hc = "0.3.1"
 base64 = "0.20.0"
-
-[dev-dependencies]
+snafu = "0.7.4"
 hyper = "0.14.23"
+color-eyre = "0.6.2"
+
+[dependencies.sqlx]
+version = "0.6.2"
+default-features = false
+features = ["runtime-tokio-rustls", "postgres", "migrate", "macros", "time"]
