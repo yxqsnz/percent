@@ -25,7 +25,7 @@ fn account_details() -> Body {
 
 async fn register(app: &mut Router) {
     let req = Request::builder()
-        .uri("/api/v1/account")
+        .uri("/api/v1/account/create")
         .method(http::Method::POST)
         .header(http::header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
         .body(account_details())
@@ -38,8 +38,8 @@ async fn register(app: &mut Router) {
 
 async fn login(app: &mut Router) -> Option<String> {
     let req = Request::builder()
-        .uri("/api/v1/account")
-        .method(http::Method::GET)
+        .uri("/api/v1/account/login")
+        .method(http::Method::POST)
         .header(http::header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
         .body(account_details())
         .unwrap();
@@ -84,7 +84,7 @@ async fn account_info(db: PgPool) {
     let token = login(&mut app).await.unwrap();
 
     let req = Request::builder()
-        .uri("/api/v1/account-info")
+        .uri("/api/v1/account/info")
         .method(http::Method::GET)
         .header(COOKIE, format!("Account.Token={token}"))
         .body(Body::empty())

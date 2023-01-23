@@ -1,15 +1,17 @@
+use crate::response::MissingValueSnafu;
 use crate::{
     body::account_create::{AccountCreate, AccountJoin},
     database::{accounts::Accounts, Connection},
+    models::account::Account,
     response::{BcryptSnafu, SqlxSnafu, ValidationsSnafu},
     utils::{token, Result},
 };
 use axum::{http::StatusCode, Json};
 use axum_extra::extract::{cookie::Cookie, CookieJar};
-use snafu::ResultExt;
+use snafu::{OptionExt, ResultExt};
 use validator::Validate;
 
-pub async fn post(
+pub async fn create(
     Connection(mut db): Connection,
     Json(data): Json<AccountCreate>,
 ) -> Result<StatusCode> {
@@ -30,7 +32,7 @@ pub async fn post(
     Ok(StatusCode::CREATED)
 }
 
-pub async fn get(
+pub async fn login(
     Connection(mut db): Connection,
     jar: CookieJar,
     Json(data): Json<AccountJoin>,
@@ -47,4 +49,16 @@ pub async fn get(
     } else {
         Ok((jar, StatusCode::UNAUTHORIZED))
     }
+}
+
+pub async fn info(Connection(mut db): Connection, jar: CookieJar) -> Result<Json<Account>> {
+    let token = jar.get("Account.Token").context(MissingValueSnafu {
+        text: String::from("missing Account.Token cookie"),
+    })?;
+
+    let account = Accounts::find_by_token(&mut db, token.value())
+        .await
+        .context(SqlxSnafu)?;
+
+    Ok(Json(account))
 }
