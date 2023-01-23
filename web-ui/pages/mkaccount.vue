@@ -55,14 +55,44 @@ const validations = {
   passed: false,
 };
 
-const onSubmit = (event: FormDataEvent) => {
+const auth = async () => {
+  const rtConfig = useRuntimeConfig();
+  const apiBaseUrl = rtConfig.public.apiBaseUrl;
+  const authData = {
+    nick: nick.value,
+    password: password.value,
+  };
+
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  let result = await fetch(`${apiBaseUrl}/account/create`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(authData),
+  });
+
+  if (!result.ok && result.status != 201) return false;
+
+  result = await fetch(`${apiBaseUrl}/account/login`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(authData),
+  });
+
+  if (!result.ok && result.status != 200) return false;
+
+  console.log(result.headers);
+};
+
+const onSubmit = async (event: FormDataEvent) => {
   event.preventDefault();
   moreClasses.value = "cursor-wait";
-  setTimeout(() => {
-    moreClasses.value = "";
-    const router = useRouter();
-    router.push("/");
-  }, 1500);
+  await auth();
+  moreClasses.value = "";
+  const router = useRouter();
+  router.push("/");
 };
 
 watchEffect(() => {

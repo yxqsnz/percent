@@ -3,6 +3,11 @@ const srcDir = ".";
 
 export default defineNuxtConfig({
   modules: ["@nuxtjs/tailwindcss"],
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: "http://localhost:9999/api/v1",
+    },
+  },
 
   tailwindcss: {
     config: {
