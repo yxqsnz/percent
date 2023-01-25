@@ -7,7 +7,7 @@
 
       <ul className="list-disc text-red-500">
         <li v-if="validations.invalidNickname">
-          Nick must be at least 2 and smaller than 16 characters.
+          Nick must be at least 3 and smaller than 16 characters.
         </li>
 
         <li v-if="validations.invalidPassword">
@@ -19,7 +19,7 @@
     <RegisterField
       type="text"
       placeholder="Your nickname"
-      min-length="2"
+      min-length="3"
       max-length="16"
       v-model:value="nick"
     />
@@ -27,7 +27,7 @@
     <RegisterField
       type="password"
       placeholder="Your password"
-      min-length="2"
+      min-length="8"
       max-length="72"
       v-model:value="password"
     />
@@ -81,9 +81,11 @@ const auth = async () => {
     body: JSON.stringify(authData),
   });
 
+  // TODO: Fetch cookies
+
   if (!result.ok && result.status != 200) return false;
 
-  console.log(result.headers);
+  return true;
 };
 
 const onSubmit = async (event: FormDataEvent) => {
@@ -100,7 +102,7 @@ watchEffect(() => {
   const nk = nick.value;
 
   validations.invalidPassword = !(pw.length >= 8 && pw.length <= 72);
-  validations.invalidNickname = !(nk.length >= 2 && nk.length <= 16);
+  validations.invalidNickname = !(nk.length >= 3 && nk.length <= 16);
 
   if (validations.invalidNickname || validations.invalidPassword) {
     moreClasses.value = "cursor-not-allowed bg-emerald-600 text-red-500";
